@@ -23,6 +23,7 @@ services:
       - KEEP_METRICS=true
     volumes:
       - ./state:/state
+    user: "0:0"
 
   keep-websocket-server:
     extends:
