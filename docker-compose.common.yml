@@ -4,7 +4,7 @@ services:
       - "3010:3000"
     environment:
       - NEXTAUTH_SECRET=secret
-      - NEXTAUTH_URL=http://localhost:3010
+      - NEXTAUTH_URL=http://s4ws84ossg00w4csk0o4w884.subbiesupport.net
       - NEXT_PUBLIC_API_URL=http://keep-backend:8080
       - POSTHOG_KEY=phc_muk9qE3TfZsX3SZ9XxX52kCGJBclrjhkP9JxAQcm1PZ
       - POSTHOG_HOST=https://ingest.keephq.dev
