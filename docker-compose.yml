@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   keep-frontend:
     extends:
@@ -21,9 +23,27 @@ services:
       - AUTH_TYPE=DB
       - PROMETHEUS_MULTIPROC_DIR=/tmp/prometheus
       - KEEP_METRICS=true
+      - DATABASE_CONNECTION_STRING=postgresql+psycopg2://keepadmin:keeppassword@local-postgres:5432/keep-db
     volumes:
       - ./state:/state
     user: "0:0"
+    depends_on:
+      - local-postgres
+
+  local-postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: keepadmin
+      POSTGRES_PASSWORD: keeppassword
+      POSTGRES_DB: keep-db
+    volumes:
+      - keep_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keepadmin -d keep-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   keep-websocket-server:
     extends:
@@ -59,3 +79,6 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
     depends_on:
       - keep-backend
+
+volumes:
+  keep_pgdata:
